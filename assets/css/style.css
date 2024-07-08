@@ -63,7 +63,11 @@ h1 {
     padding-bottom: 2rem;
 }
 
-#myChart {
-    margin: 4rem;
+.graficas {
+    margin: auto;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    width: 60%;
+    justify-content: center;
 }
   
