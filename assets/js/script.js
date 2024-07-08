@@ -13,12 +13,17 @@ let myChart = null
 convertir.addEventListener('click',async() => {
     const cantidad = parseFloat(monedaChilena.value)
     const moneda = selectMoneda.value 
+    
 
     if (isNaN(cantidad) || cantidad <= 0) {
         alert('Ingrese un monto valido')
-        valorFinal.innerHTML= `<p>Valor no valido</p>`
-        //return
+        
+               
+    } else if ( moneda != 'dolar' & moneda !=  'euro') {
+        alert('Ingrese una divisa')
     }
+
+    
 
     try {
         const respuesta = await fetch(apiURL);
@@ -32,8 +37,14 @@ convertir.addEventListener('click',async() => {
             } else if (moneda === 'euro') {
                 tasaCambio = data.euro.valor
             }
-       const resultado = cantidad / tasaCambio 
-        valorFinal.innerHTML= `<h5> Resultado: ${resultado.toFixed(2)}</h5>`
+       const resultado = cantidad / tasaCambio
+        if (resultado > 0) {
+            valorFinal.innerHTML= `<h5> Resultado: ${resultado.toFixed(2)}</h5>`
+        } else {
+            valorFinal.innerHTML= `<h5> Resultado: Error</h5>`
+        }
+
+        
 
         async function getMonedas() {   
             const res = await fetch(`https://mindicador.cl/api/${divisa}`);
@@ -62,10 +73,9 @@ convertir.addEventListener('click',async() => {
         
         async function renderGrafica() {
 
-            if(!monedaChilena.value) {
-                mensajeError.textContent = "Ingrese un valor antes de continuar"     
-                return;          
-            }
+            if(resultado > 1) {
+                        
+            
             const data = await getMonedas();
             const config = {
                 type: "line",
@@ -79,6 +89,7 @@ convertir.addEventListener('click',async() => {
             }
 
             myChart = new Chart(chartContainer, config);
+        } else {}
 
            
         }
